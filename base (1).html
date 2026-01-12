@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DulceAmore 🌸 | Alta Floristería</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syne:wght@400;700;800&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --emerald-dark: #061612;
+            --cream-light: #fdfaf7;
+            --petal-color: #ffccdd; /* Rosa suave para los pétalos */
+            --subtle-shadow: rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- FONDO DE SEDA LUMINOSA --- */
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #fefdfd 0%, #fdfaf7 25%, #fff5f5 50%, #fdfaf7 75%, #fefdfd 100%);
+            background-size: 400% 400%;
+            animation: luminousFlow 20s ease infinite;
+            font-family: 'Syne', sans-serif;
+            color: var(--emerald-dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        @keyframes luminousFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- PÉTALOS FLOTANTES (AJUSTADO PARA SER MÁS ELEGANTE) --- */
+        .flower-rain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0; /* Asegurarse de que esté detrás del contenido */
+        }
+
+        .flower-petal {
+            position: absolute;
+            color: var(--petal-color);
+            font-size: 18px; /* Tamaño ligeramente más pequeño */
+            opacity: 0.6; /* Más translúcido */
+            user-select: none;
+            animation: fall linear infinite;
+        }
+
+        /* Ajuste de la animación para un movimiento más orgánico */
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            50% { transform: translateY(50vh) translateX(20vw) rotate(180deg); }
+            100% { transform: translateY(110vh) translateX(-20vw) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- NAVBAR "JOYERÍA" GLASS-EFFECT --- */
+        .navbar {
+            background: rgba(255, 255, 255, 0.6) !important; /* Más transparente */
+            backdrop-filter: blur(18px); /* Blur más fuerte */
+            border-bottom: 2px solid var(--gold-primary); /* Línea dorada más notoria */
+            padding: 20px 0;
+            z-index: 1000;
+            box-shadow: 0 5px 20px var(--subtle-shadow); /* Sombra sutil */
+        }
+
+        .navbar-brand {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.5rem; /* Más grande */
+            font-weight: 900;
+            background: linear-gradient(to right, #aa771c, var(--gold-primary), #fcf6ba); /* Degradado más rico */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+
+        .nav-link {
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px; /* Más espaciado */
+            font-size: 0.8rem;
+            color: var(--emerald-dark) !important;
+            margin: 0 18px; /* Mayor separación */
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Curva de animación suave */
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--gold-primary) !important;
+            transform: translateY(-3px) scale(1.02); /* Efecto flotante al pasar el mouse */
+        }
+
+        /* Botón de Selección / Registro VIP */
+        .btn-luxury {
+            background: var(--emerald-dark);
+            color: var(--gold-primary) !important;
+            border: 1px solid var(--gold-primary);
+            padding: 12px 28px !important;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 2px; /* Ligeramente anguloso */
+        }
+        .btn-luxury:hover {
+            background: var(--gold-primary);
+            color: white !important;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* --- CONTENEDOR PRINCIPAL FLOTANTE --- */
+        .main-content-floating {
+            position: relative;
+            z-index: 10;
+            padding: 80px 0; /* Más espacio vertical */
+            margin-top: 30px; /* Separación del navbar */
+            background: rgba(255, 255, 255, 0.9); /* Fondo claro para el contenido */
+            border-radius: 5px; /* Bordes suaves */
+            box-shadow: 0 20px 60px var(--subtle-shadow); /* Sombra de profundidad */
+            animation: contentReveal 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Animación de entrada */
+        }
+
+        @keyframes contentReveal {
+            0% { opacity: 0; transform: translateY(50px) scale(0.98); filter: blur(15px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* --- FOOTER "JARDÍN NOCTURNO" --- */
+        footer {
+            background: #040d0b; /* Más oscuro que emerald */
+            color: var(--cream-light);
+            padding: 120px 0 60px;
+            border-top: 5px solid var(--gold-primary); /* Borde dorado prominente */
+            position: relative;
+            z-index: 20;
+            overflow: hidden; /* Para contener los posibles efectos */
+            margin-top: 80px;
+        }
+        
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.8rem; /* Más grande */
+            font-style: italic;
+            color: var(--gold-primary);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .social-btn-footer {
+            width: 65px; height: 65px; /* Más grandes */
+            border: 2px solid var(--gold-primary); /* Borde más grueso */
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            margin: 0 15px;
+            color: var(--gold-primary);
+            font-size: 1.6rem;
+            text-decoration: none;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .social-btn-footer:hover {
+            background: var(--gold-primary);
+            color: #000;
+            transform: translateY(-12px) rotate(15deg) scale(1.1); /* Animación más juguetona */
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.5);
+        }
+
+        .footer-info {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flower-rain" id="flowerRain"></div>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">DULCEAMORE</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fa-solid fa-bars" style="color: var(--gold-primary); font-size: 1.8rem;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'productos:lista_categorias' %}">Colecciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-luxury ms-lg-3" href="/carrito/">
+                            <i class="fa-solid fa-bag-shopping me-2"></i>Mi Selección
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item ms-lg-4 d-flex align-items-center">
+                            <span class="nav-link" style="color: var(--gold-primary) !important; font-weight: 900; margin-right: 5px;">
+                                <i class="fa-solid fa-user-circle me-1"></i> {{ user.username }}
+                            </span>
+                            <a class="nav-link" href="/usuarios/logout/" style="font-size: 0.65rem; opacity: 0.7;">Salir</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-lg-3"><a class="nav-link" href="/usuarios/login/">Acceso</a></li>
+                        <li class="nav-item ms-lg-2">
+                            <a class="nav-link btn-luxury" href="{% url 'registro' %}">Registro VIP</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content-floating">
+        {% block contenido %}
+        {% endblock %}
+    </div>
+
+    <footer class="text-center">
+        <div class="container">
+            <div class="footer-logo">DulceAmore</div>
+            <p class="mx-auto mb-5 italic opacity-85" style="max-width: 700px; font-family: 'Playfair Display'; font-size: 1.3rem; line-height: 1.8;">
+                "Cultivamos la belleza en cada pétalo, creamos emociones en cada detalle. DulceAmore, donde la elegancia floral cobra vida."
+            </p>
+            <div class="mb-5">
+                <a href="https://www.instagram.com/katt.sanchez.3" class="social-btn-footer" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@dulceamore65" class="social-btn-footer" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://wa.link/imbl57" class="social-btn-footer" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+            <div class="row footer-info">
+                <div class="col-md-4 mb-3"> QUITO - ECUADOR</div>
+                <div class="col-md-4 mb-3">CORREO: katherinekatherinediaz@gmail.com</div>
+                <div class="col-md-4 mb-3">© 2026 DULCEAMORE .</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function createPetal() {
+            const container = document.getElementById('flowerRain');
+            const petal = document.createElement('div');
+            petal.classList.add('flower-petal');
+            
+            // Más variedad de pétalos y hojas para un efecto más natural
+            const elements = ['🌸', '🌺', '🌼', '🍃', '🌷', '✨']; 
+            petal.innerText = elements[Math.floor(Math.random() * elements.length)];
+            
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = Math.random() * 8 + 10 + 's'; // Duración entre 10 y 18 segundos
+            petal.style.animationDelay = Math.random() * 5 + 's'; // Retraso aleatorio
+            petal.style.transform = `scale(${Math.random() * 0.8 + 0.2})`; // Tamaño aleatorio
+            
+            container.appendChild(petal);
+
+            // Borrar el pétalo después de que termine su animación + un margen
+            setTimeout(() => {
+                petal.remove();
+            }, (parseFloat(petal.style.animationDuration) * 1000) + 1000);
+        }
+
+        // Generar un nuevo pétalo cada medio segundo
+        setInterval(createPetal, 500); 
+    </script>
+</body>
+</html>
