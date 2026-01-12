@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="container py-5">
+    <nav class="mb-4 reveal-down">
+        <a href="{% url 'productos:lista' %}" class="btn-back-luxury">
+            <i class="fa-solid fa-arrow-left-long me-2"></i> Explorar el Atelier
+        </a>
+    </nav>
+
+    <div class="row g-lg-5">
+        <div class="col-lg-6 mb-4 mb-lg-0 reveal-up">
+            <div class="product-gallery-frame">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-product-main">
+                {% else %}
+                    <img src="https://via.placeholder.com/800x1000?text=DulceAmore" class="img-product-main">
+                {% endif %}
+                <div class="gallery-badge">Pieza Única</div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 reveal-up" style="animation-delay: 0.2s;">
+            <div class="product-info-sticky">
+                <div class="luxury-tag mb-2">{{ producto.categoria.nombre }}</div>
+                <h1 class="product-title-display">{{ producto.nombre }}</h1>
+                <div class="price-display-luxury mb-4">
+                    <span class="currency">$</span>
+                    <span class="value">{{ producto.precio }}</span>
+                </div>
+
+                <div class="product-description mb-5">
+                        <h5 class="font-playfair italic mb-3" style="color: #d4af37;">Notas del Florista</h5>
+                   <p class="desc-text">
+                     {% if producto.descripcion %}
+                     {{ producto.descripcion|linebreaks }}
+                     {% else %}
+                      Esta pieza artesanal ha sido curada bajo los estándares de nuestro Atelier,
+                       utilizando los elementos más frescos de la temporada 2026.
+                     {% endif %}
+                   </p>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <a href="{% url 'carrito:agregar' producto.id %}" class="btn-add-to-cart-luxury">
+                        <i class="fa-solid fa-gem me-2"></i> Añadir a mi Selección
+                    </a>
+                </div>
+
+                <div class="trust-icons mt-5">
+                    <div class="trust-item">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <span>Entrega Express</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fa-solid fa-medal"></i>
+                        <span>Calidad Atelier</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 pt-5 reveal-up">
+        <div class="text-center mb-5">
+            <h2 class="font-playfair italic display-6">También te podría encantar...</h2>
+            <div class="gold-line-center"></div>
+        </div>
+
+        <div class="row row-cols-2 row-cols-md-4 g-4">
+            {% for p in recomendaciones %}
+            <div class="col">
+                <div class="atelier-card-mini">
+                    <div class="mini-visual">
+                        <a href="{% url 'productos:detalle' p.id %}">
+                            {% if p.imagen %}
+                                <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}" class="img-mini">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="mini-details text-center py-3">
+                        <a href="{% url 'productos:detalle' p.id %}" class="text-decoration-none">
+                            <h6 class="mini-name text-dark">{{ p.nombre }}</h6>
+                        </a>
+                        <span class="mini-price">${{ p.price }}</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="opacity-50 italic">Buscando piezas similares para ti...</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* --- ANIMACIONES --- */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(40px); filter: blur(10px); }
+        to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    .reveal-up { animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    /* --- ESTILOS DE PRODUCTO --- */
+    .btn-back-luxury {
+        text-decoration: none; color: #666; font-size: 0.75rem; text-transform: uppercase;
+        letter-spacing: 2px; transition: 0.3s;
+    }
+    .btn-back-luxury:hover { color: #d4af37; }
+
+    .product-gallery-frame {
+        position: relative; border: 1px solid rgba(212, 175, 55, 0.2);
+        padding: 15px; background: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+    }
+    .img-product-main { width: 100%; height: auto; object-fit: cover; }
+
+    .gallery-badge {
+        position: absolute; top: 30px; left: 30px; background: #061612;
+        color: #d4af37; padding: 5px 15px; font-size: 0.6rem;
+        text-transform: uppercase; font-weight: 800; letter-spacing: 2px;
+    }
+
+    /* --- TEXTOS --- */
+    .luxury-tag { color: #d4af37; font-weight: 800; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; }
+    .product-title-display { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: #061612; line-height: 1.1; margin-bottom: 20px; }
+    .price-display-luxury { font-family: 'Syne', sans-serif; color: #061612; }
+    .price-display-luxury .value { font-size: 2.5rem; font-weight: 900; }
+
+    .desc-text { color: #555; line-height: 1.8; font-size: 1.1rem; }
+
+    /* --- BOTONES --- */
+    .btn-add-to-cart-luxury {
+        background: #061612; color: #d4af37 !important; text-align: center;
+        padding: 20px; text-decoration: none; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 3px; border: 1px solid #d4af37; transition: 0.4s;
+    }
+    .btn-add-to-cart-luxury:hover { background: #d4af37; color: #061612 !important; transform: translateY(-5px); }
+
+    .trust-icons { display: flex; gap: 30px; border-top: 1px solid #eee; pt-4; }
+    .trust-item { display: flex; align-items: center; gap: 10px; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #888; }
+    .trust-item i { color: #d4af37; font-size: 1rem; }
+
+    /* --- RECOMENDACIONES MINI --- */
+    .gold-line-center { height: 1px; width: 60px; background: #d4af37; margin: 0 auto 30px; }
+    .mini-visual { overflow: hidden; aspect-ratio: 1 / 1; border: 1px solid #eee; }
+    .img-mini { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+    .mini-visual:hover .img-mini { transform: scale(1.1); }
+    .mini-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 5px; }
+    .mini-price { font-size: 0.8rem; color: #d4af37; font-weight: 800; }
+
+    /* Responsividad */
+    @media (max-width: 991px) {
+        .product-title-display { font-size: 2.5rem; }
+    }
+</style>
+{% endblock %}

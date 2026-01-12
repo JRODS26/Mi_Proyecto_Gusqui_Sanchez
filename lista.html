@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="container-fluid py-5 reveal">
+    <div class="text-center mb-5">
+        <div class="d-flex align-items-center justify-content-center mb-2">
+            <div class="gold-line-divider"></div>
+            <span class="mx-3 editorial-tag">Colección de Autor</span>
+            <div class="gold-line-divider"></div>
+        </div>
+        <h1 class="display-3 luxury-main-title">Nuestras Creaciones 🌸</h1>
+        <p class="luxury-subtitle">Arte floral y repostería fina para momentos inolvidables</p>
+    </div>
+
+    <div class="mb-5 text-center">
+        <div class="filter-container d-inline-flex flex-wrap justify-content-center gap-2">
+            <a href="?" class="btn-filter {% if not request.GET.categoria %}active{% endif %}">Todas</a>
+            {% for categoria in categorias %}
+                <a href="?categoria={{ categoria.id }}"
+                   class="btn-filter {% if request.GET.categoria == categoria.id|stringformat:'i' %}active{% endif %}">
+                    {{ categoria.nombre }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row g-4 g-lg-5 justify-content-center">
+        {% for p in productos %}
+        <div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center">
+            <div class="product-card-luxury">
+                <div class="product-visual">
+                    {% if p.imagen %}
+                        <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}" loading="lazy">
+                    {% else %}
+                        <div class="no-image-placeholder">
+                            <span>DulceAmore Atelier</span>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="premium-badge">Premium</div>
+
+                    <div class="action-overlay">
+                        <a href="{% url 'carrito:agregar' p.id %}" class="btn-add-to-bag">
+                            <i class="fa-solid fa-plus me-2"></i> Añadir a la Bolsa
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-info-box text-center mt-4">
+                    <h4 class="product-name-heading">{{ p.nombre }}</h4>
+                    <div class="gold-accent-divider"></div>
+                    <div class="price-display">
+                        <span class="currency">$</span>{{ p.precio }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="empty-state-text">Nuestra colección se está renovando. Vuelve pronto.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    /* --- VARIABLES DE MARCA (Sincronizadas con base.html) --- */
+    :root {
+        --deep: #061612;
+        --gold: #d4af37;
+        --rose: #e5b1b1;
+        --font-main: 'Playfair Display', serif;
+    }
+
+    /* --- DISEÑO DE CABECERA --- */
+    .luxury-main-title { 
+        font-family: var(--font-main); 
+        font-style: italic; 
+        color: var(--deep); 
+        font-weight: 900;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+    }
+    .editorial-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 5px; color: var(--gold); font-weight: 800; }
+    .luxury-subtitle { opacity: 0.6; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 3px; margin-top: 10px; }
+    .gold-line-divider { height: 1px; width: 40px; background: var(--gold); opacity: 0.5; }
+
+    /* --- FILTROS RESPONSIVOS --- */
+    .filter-container {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        padding: 8px;
+        border-radius: 50px;
+        border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .btn-filter {
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--deep);
+        text-decoration: none;
+        transition: 0.4s;
+    }
+    .btn-filter.active, .btn-filter:hover {
+        background: var(--deep);
+        color: var(--gold) !important;
+        box-shadow: 0 10px 20px rgba(6, 22, 18, 0.2);
+    }
+
+    /* --- TARJETA DE PRODUCTO LUXURY --- */
+    .product-card-luxury { width: 100%; max-width: 380px; position: relative; }
+
+    .product-visual {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 4 / 5; /* Proporción de revista de moda */
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        background: white;
+    }
+
+    .product-visual img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+    .product-card-luxury:hover img { transform: scale(1.1); }
+
+    /* Overlay que no daña el celular */
+    .action-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(6, 22, 18, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: 0.5s;
+    }
+    .product-card-luxury:hover .action-overlay { opacity: 1; }
+
+    /* --- BOTÓN AÑADIR (Adiós al Azul Genérico) --- */
+    .btn-add-to-bag {
+        background: var(--deep);
+        color: var(--gold) !important;
+        padding: 15px 30px;
+        text-decoration: none;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        border: 1px solid var(--gold);
+        transform: translateY(20px);
+        transition: 0.5s;
+    }
+    .product-card-luxury:hover .btn-add-to-bag { transform: translateY(0); }
+
+    /* --- INFO Y PRECIOS --- */
+    .product-name-heading { font-family: var(--font-main); font-weight: 700; color: var(--deep); font-size: 1.4rem; }
+    .gold-accent-divider { height: 1px; width: 30px; background: var(--gold); margin: 12px auto; }
+    .price-display { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--deep); }
+    .currency { font-size: 0.8rem; vertical-align: super; margin-right: 3px; color: var(--gold); }
+
+    .premium-badge {
+        position: absolute; top: 15px; left: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--deep);
+        padding: 4px 12px; font-size: 0.6rem; font-weight: 900;
+        text-transform: uppercase; letter-spacing: 2px; border: 1px solid var(--gold);
+    }
+
+    /* --- AJUSTES MÓVILES (Celulares) --- */
+    @media (max-width: 768px) {
+        .action-overlay { opacity: 1; background: transparent; align-items: flex-end; padding-bottom: 20px; }
+        .btn-add-to-bag { transform: translateY(0); width: 90%; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .product-name-heading { font-size: 1.2rem; }
+    }
+</style>
+{% endblock %}

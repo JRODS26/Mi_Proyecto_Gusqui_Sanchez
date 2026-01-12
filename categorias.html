@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="container py-5">
+    <header class="text-center mb-5 reveal-down">
+        <h6 class="text-gold-luxury tracking-widest mb-2">CURADURÍA DULCEAMORE</h6>
+        <h1 class="display-3 font-playfair italic" style="color: #061612;">Nuestras Colecciones</h1>
+        <div class="luxury-line mx-auto">
+            <span class="gold-dot"></span>
+        </div>
+    </header>
+
+    <div class="row g-4 g-lg-5">
+        {% for cat in categorias %}
+        <div class="col-md-6 col-lg-4 reveal-up" style="animation-delay: calc({{ forloop.counter }} * 0.1s);">
+            <a href="{% url 'productos:lista' %}?categoria={{ cat.id }}" class="category-card-link">
+                <div class="category-luxury-card shadow-premium">
+                    <div class="category-img-box">
+                        {% if cat.imagen %}
+                            <img src="{{ cat.imagen.url }}" alt="{{ cat.nombre }}" class="img-main">
+                        {% else %}
+                            <img src="https://via.placeholder.com/800x1000?text=Atelier+{{ cat.nombre }}" alt="{{ cat.nombre }}" class="img-main">
+                        {% endif %}
+                        
+                        <div class="category-overlay-luxury">
+                            <div class="category-info-luxury">
+                                <h2 class="cat-title-luxury">{{ cat.nombre }}</h2>
+                                <div class="gold-divider-sm"></div>
+                                <span class="cat-explore-luxury">Explorar Selección <i class="fa-solid fa-arrow-right ms-2"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="font-playfair italic opacity-50">Nuestras colecciones están floreciendo. Vuelve pronto.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    /* --- VARIABLES Y FUENTES --- */
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    .italic { font-style: italic; }
+    .text-gold-luxury { color: #d4af37; letter-spacing: 5px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
+    
+    /* Animación de entrada */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal-up { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    /* Divisores elegantes */
+    .luxury-line { height: 1px; width: 100px; background: linear-gradient(90deg, transparent, #d4af37, transparent); margin: 25px auto; position: relative; }
+    .gold-dot { width: 6px; height: 6px; background: #d4af37; position: absolute; top: -3px; left: 47px; transform: rotate(45deg); }
+
+    /* --- TARJETA DE CATEGORÍA --- */
+    .category-card-link { text-decoration: none !important; }
+    
+    .category-luxury-card {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 4 / 5;
+        background: #061612;
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        transition: 0.5s ease;
+    }
+
+    .category-img-box { width: 100%; height: 100%; position: relative; }
+
+    .img-main {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.85;
+        transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    /* Overlay dinámico */
+    .category-overlay-luxury {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to top, rgba(6, 22, 18, 0.9) 0%, transparent 100%);
+        transition: 0.5s ease;
+    }
+
+    .category-info-luxury { text-align: center; color: #fff; padding: 20px; z-index: 2; }
+
+    .cat-title-luxury {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transform: translateY(15px);
+        transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .gold-divider-sm {
+        height: 2px;
+        width: 0;
+        background: #d4af37;
+        margin: 0 auto 15px;
+        transition: 0.5s ease;
+    }
+
+    .cat-explore-luxury {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: #d4af37;
+        font-weight: 800;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: 0.5s ease;
+    }
+
+    /* --- EFECTOS HOVER (PC) --- */
+    @media (min-width: 992px) {
+        .category-luxury-card:hover { transform: translateY(-10px); border-color: #d4af37; }
+        .category-luxury-card:hover .img-main { transform: scale(1.1); opacity: 0.6; }
+        .category-luxury-card:hover .category-overlay-luxury { background: rgba(6, 22, 18, 0.5); }
+        .category-luxury-card:hover .cat-title-luxury { transform: translateY(0); }
+        .category-luxury-card:hover .gold-divider-sm { width: 50px; }
+        .category-luxury-card:hover .cat-explore-luxury { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- AJUSTES MÓVILES --- */
+    @media (max-width: 991px) {
+        .cat-title-luxury { font-size: 1.6rem; transform: translateY(0); }
+        .gold-divider-sm { width: 40px; }
+        .cat-explore-luxury { opacity: 1; transform: translateY(0); font-size: 0.6rem; }
+        .category-overlay-luxury { background: rgba(6, 22, 18, 0.4); }
+    }
+</style>
+{% endblock %}

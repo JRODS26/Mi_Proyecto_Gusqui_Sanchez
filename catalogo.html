@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="atelier-garden-wrapper">
+    <div class="container py-5">
+        
+        <header class="text-center mb-5 reveal-down">
+            <div class="flower-icon-divider">
+                <span class="petal"></span>
+                <span class="petal"></span>
+                <span class="petal"></span>
+            </div>
+            <h1 class="floral-title">El Jardín de <span class="gold-brush">DulceAmore</span></h1>
+            <p class="floral-subtitle">CURADURÍA BOTÁNICA • EDICIÓN 2026</p>
+            
+            <div class="mt-4">
+                <a href="{% url 'productos:lista_categorias' %}" class="btn-floral-glass">
+                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Ver Colecciones
+                </a>
+            </div>
+        </header>
+
+        <div class="row g-4 g-xl-5">
+            {% for producto in productos %}
+            <div class="col-12 col-sm-6 col-lg-4 reveal-up" style="animation-delay: calc({{ forloop.counter }} * 0.15s);">
+                <div class="floral-card">
+                    <div class="floral-visual">
+                        <a href="{% url 'productos:detalle' producto.id %}" class="floral-main-link">
+                            {% if producto.imagen %}
+                                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid floral-img">
+                            {% else %}
+                                <img src="https://via.placeholder.com/800x1000?text=DulceAmore+Florist" class="img-fluid floral-img">
+                            {% endif %}
+                            
+                            <div class="floral-light-filter"></div>
+                        </a>
+
+                        <div class="floral-label-tag">Diseño de Autor</div>
+
+                        <div class="floral-action-box">
+                            <a href="{% url 'carrito:agregar' producto.id %}" class="btn-floral-add">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="floral-info">
+                        <div class="floral-cat">{{ producto.categoria.nombre }}</div>
+                        <a href="{% url 'productos:detalle' producto.id %}" class="floral-name">
+                            {{ producto.nombre }}
+                        </a>
+                        <div class="floral-price">
+                            <span class="floral-currency">$</span>{{ producto.precio }}
+                        </div>
+                        
+                        <div class="floral-line"></div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <h3 class="font-playfair italic gold">Nuestras flores están creciendo...</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* --- FONDO Y ATMÓSFERA --- */
+    .atelier-garden-wrapper {
+        background: linear-gradient(135deg, #fff9f2 0%, #fff1e6 50%, #f7ebe1 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* --- ANIMACIONES --- */
+    @keyframes flowerReveal {
+        from { opacity: 0; transform: scale(0.9) translateY(40px); filter: blur(15px); }
+        to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+    .reveal-up { animation: flowerReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+    /* --- CABECERA --- */
+    .floral-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900; color: #061612; line-height: 1; }
+    .gold-brush { color: #d4af37; font-style: italic; position: relative; }
+    .floral-subtitle { font-size: 0.7rem; letter-spacing: 6px; color: #8a7b6a; font-weight: 700; margin-top: 15px; }
+
+    .btn-floral-glass {
+        display: inline-block; padding: 12px 35px; background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(10px); border: 1px solid #d4af37; color: #061612;
+        text-decoration: none; border-radius: 50px; font-weight: 800; font-size: 0.75rem;
+        letter-spacing: 2px; transition: 0.4s;
+    }
+    .btn-floral-glass:hover { background: #061612; color: #d4af37; transform: translateY(-3px); }
+
+    /* --- TARJETA FLORAL --- */
+    .floral-card { position: relative; background: transparent; transition: 0.5s; }
+    
+    .floral-visual { 
+        position: relative; overflow: hidden; border-radius: 60px 5px 60px 5px; /* Corte orgánico */
+        box-shadow: 0 15px 35px rgba(138, 123, 106, 0.15);
+        background: #fff;
+    }
+
+    .floral-main-link { display: block; height: 100%; z-index: 1; position: relative; }
+
+    .floral-img { 
+        width: 100%; height: 100%; object-fit: cover; 
+        transition: 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .floral-card:hover .floral-img { transform: scale(1.1); filter: sepia(0.2); }
+
+    .floral-light-filter {
+        position: absolute; inset: 0;
+        background: linear-gradient(to top, rgba(138, 123, 106, 0.3), transparent);
+        pointer-events: none;
+    }
+
+    /* Badge */
+    .floral-label-tag {
+        position: absolute; top: 20px; left: 20px; background: #061612;
+        color: #d4af37; font-size: 0.6rem; font-weight: 800; padding: 6px 12px;
+        letter-spacing: 2px; text-transform: uppercase; z-index: 2;
+    }
+
+    /* Botón añadir circular */
+    .floral-action-box {
+        position: absolute; bottom: 20px; right: 20px; z-index: 3;
+        transform: scale(0); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .floral-card:hover .floral-action-box { transform: scale(1); }
+
+    .btn-floral-add {
+        width: 50px; height: 50px; background: #d4af37; color: #fff !important;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; text-decoration: none; font-size: 1.2rem;
+        box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+    }
+
+    /* --- INFO --- */
+    .floral-info { padding: 25px 10px; text-align: center; }
+    .floral-cat { font-size: 0.65rem; color: #d4af37; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; }
+    .floral-name { 
+        display: block; font-family: 'Playfair Display', serif; font-size: 1.8rem; 
+        color: #061612; text-decoration: none; font-weight: 800; margin: 8px 0;
+        transition: 0.3s;
+    }
+    .floral-name:hover { color: #d4af37; }
+    .floral-price { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 900; color: #061612; }
+    .floral-currency { font-size: 0.9rem; vertical-align: super; }
+    
+    .floral-line {
+        height: 1px; width: 40px; background: #d4af37; margin: 15px auto;
+        transition: 0.5s;
+    }
+    .floral-card:hover .floral-line { width: 100px; }
+
+    /* RESPONSIVIDAD */
+    @media (max-width: 768px) {
+        .floral-action-box { transform: scale(1); opacity: 1; }
+        .floral-visual { border-radius: 30px 5px 30px 5px; }
+    }
+</style>
+{% endblock %}
